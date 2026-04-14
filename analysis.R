@@ -174,26 +174,19 @@ cat(sprintf("  CV Spec:     %.3f\n", cv_model$results$Spec))
 png("figure5_logistic_regression.png", width = 1600, height = 700, res = 150)
 par(mfrow = c(1, 2))
 
-# Smoothed ROC curve — plot using original roc_obj with interpolated smoothing
-# Use high-resolution interpolation on the original ROC for a smooth appearance
-fpr_seq <- seq(0, 1, length.out = 500)
-tpr_interp <- approx(1 - roc_obj$specificities, roc_obj$sensitivities,
-                      xout = fpr_seq, method = "linear", ties = mean)$y
-tpr_smooth <- stats::filter(tpr_interp, rep(1/15, 15), sides = 2)
-# Fill NA edges from filter with original values
-tpr_smooth[is.na(tpr_smooth)] <- tpr_interp[is.na(tpr_smooth)]
-# Ensure monotonicity and endpoints
-tpr_smooth <- cummax(tpr_smooth)
-tpr_smooth[1] <- 0
-tpr_smooth[length(tpr_smooth)] <- 1
+# Smoothed ROC curve using binormal method, plotted manually
+roc_smooth <- smooth(roc_obj, method = "binormal")
+smooth_fpr <- 1 - roc_smooth$specificities
+smooth_tpr <- roc_smooth$sensitivities
+ord <- order(smooth_fpr)
 
-plot(fpr_seq, tpr_smooth, type = "l", col = "darkorange", lwd = 2.5,
-     xlim = c(-0.02, 1.02), ylim = c(-0.02, 1.02),
+# Create empty plot first, then add only our two lines
+plot(NA, xlim = c(-0.02, 1.02), ylim = c(-0.02, 1.02),
      main = "ROC Curve — Therapeutic Threshold Achievement",
      xlab = "False Positive Rate (1 - Specificity)",
      ylab = "True Positive Rate (Sensitivity)")
-box(col = "black")
 segments(0, 0, 1, 1, col = "gray", lty = 2, lwd = 1.5)
+lines(smooth_fpr[ord], smooth_tpr[ord], col = "darkorange", lwd = 2.5)
 legend("bottomright",
        legend = c(sprintf("Logistic Regression (AUC = %.3f)", auc_val),
                   "Random (AUC = 0.5)"),
