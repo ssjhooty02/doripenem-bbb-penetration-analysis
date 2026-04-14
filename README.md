@@ -20,10 +20,9 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 | Analysis | Description |
 |---|---|
 | Pearson & Spearman Correlations | Bivariate relationships between PK variables and patient covariates |
-| Multiple Linear Regression (OLS) | Predictors of CSF/plasma penetration ratio, with VIF multicollinearity diagnostics |
+| Multiple Linear Regression (OLS) | Predictors of CSF/plasma penetration ratio |
 | Logistic Regression | Binary classification — probability of achieving therapeutic CSF concentration (MIC >= 0.25 ug/ml) |
 | ROC / AUC | Receiver operating characteristic curve with area under the curve |
-| Cross-Validation | 5-fold CV for model accuracy and AUC |
 
 ## Key Results
 
@@ -35,7 +34,6 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 **Logistic Regression (Therapeutic Threshold)**
 - Sampling time: OR = 1.07, p < 0.001
 - Model AUC = 0.954, accuracy = 93%
-- 5-fold CV AUC = 0.94
 
 ### Figures
 
@@ -60,12 +58,12 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 
 **Python 3.8+**
 ```bash
-pip install pandas numpy matplotlib seaborn scipy scikit-learn statsmodels
+pip install pandas numpy matplotlib seaborn scipy statsmodels
 ```
 
 **R 4.0+**
 ```r
-install.packages(c("pROC", "car", "caret", "corrplot"))
+install.packages(c("pROC", "car"))
 ```
 
 ### Generate Data
