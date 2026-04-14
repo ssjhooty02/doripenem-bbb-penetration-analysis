@@ -214,7 +214,7 @@ for (i in 1:n_rows) {
   }
 }
 
-mtext("Dependent variable: CSF/plasma penetration ratio", side = 1, line = 1.5,
+mtext("Dependent variable: CSF/plasma ratio", side = 1, line = 1.5,
       cex = 0.7, font = 3, col = "#555555")
 
 dev.off()
