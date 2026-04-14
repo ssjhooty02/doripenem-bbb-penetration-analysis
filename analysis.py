@@ -8,12 +8,13 @@ Based on: Margetis et al. (2011) "Penetration of Intact Blood-Brain Barrier by D
 Analyses performed (NOT in the original paper):
   Part A — Correlation & Multiple Linear Regression
     - Pearson & Spearman correlations between PK variables and covariates
-    - Multiple linear regression: CSF/plasma ratio ~ age + weight + CrCl + sampling_time + sex
+    - Multiple linear regression: CSF/plasma ratio ~ age + weight + CrCl + sampling_time
   Part B — Logistic Regression for Therapeutic Threshold
     - Binary outcome: CSF concentration >= 0.25 ug/ml (MIC threshold)
     - Odds ratios with 95% CI
     - ROC curve with AUC
 
+Variables analysed: age, weight, creatinine clearance, sampling time, CSF/plasma ratio.
 Dataset: Synthetic (n=200), generated to be consistent with published PK profiles.
 """
 
@@ -43,6 +44,20 @@ print(f"Therapeutic threshold met (CSF >= 0.25 ug/ml): "
       f"({100 * df['therapeutic_threshold_met'].mean():.1f}%)\n")
 
 # ============================================================
+# DEFINE ANALYSIS VARIABLES
+# ============================================================
+# Five core variables used consistently across all analyses
+analysis_vars = [
+    "age_years", "weight_kg", "creatinine_clearance_ml_min",
+    "sampling_time_min", "csf_plasma_ratio"
+]
+# Predictors for regression models (all except the outcome)
+predictors = ["age_years", "weight_kg", "creatinine_clearance_ml_min",
+              "sampling_time_min"]
+
+X = df[predictors].copy()
+
+# ============================================================
 # PART A: CORRELATION & MULTIPLE LINEAR REGRESSION
 # ============================================================
 print("\n" + "=" * 70)
@@ -50,46 +65,31 @@ print("PART A: CORRELATION ANALYSIS & MULTIPLE LINEAR REGRESSION")
 print("=" * 70)
 
 # --- A1: Correlation Matrix ---
-print("\n--- A1: Pearson Correlation Matrix (key variables) ---\n")
-corr_vars = [
-    "age_years", "weight_kg", "bmi", "creatinine_clearance_ml_min",
-    "sampling_time_min", "plasma_concentration_ug_ml",
-    "csf_concentration_ug_ml", "csf_plasma_ratio"
-]
-corr_matrix = df[corr_vars].corr(method="pearson")
+print("\n--- A1: Pearson Correlation Matrix ---\n")
+corr_matrix = df[analysis_vars].corr(method="pearson")
 print(corr_matrix.round(3).to_string())
 
 # --- A2: Key Spearman correlations ---
-print("\n--- A2: Spearman Rank Correlations (CSF concentration vs. covariates) ---\n")
-spearman_targets = [
-    "sampling_time_min", "weight_kg", "age_years",
-    "creatinine_clearance_ml_min", "bmi", "plasma_concentration_ug_ml"
-]
+print("\n--- A2: Spearman Rank Correlations (CSF/plasma ratio vs. covariates) ---\n")
 spearman_results = []
-for var in spearman_targets:
-    rho, p = stats.spearmanr(df[var], df["csf_concentration_ug_ml"])
+for var in predictors:
+    rho, p = stats.spearmanr(df[var], df["csf_plasma_ratio"])
     sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
-    print(f"  CSF conc vs {var:>35s}: rho = {rho:+.3f}, p = {p:.4f} {sig}")
+    print(f"  CSF/plasma ratio vs {var:>35s}: rho = {rho:+.3f}, p = {p:.4f} {sig}")
     spearman_results.append({"Variable": var, "Rho": rho, "P_Value": p, "Significance": sig})
 
 # --- A3: Multiple Linear Regression ---
 print("\n--- A3: Multiple Linear Regression ---")
 print("    Outcome: CSF/Plasma Ratio")
-print("    Predictors: age, weight, CrCl, sampling_time, sex\n")
+print("    Predictors: age, weight, CrCl, sampling_time\n")
 
-df["sex_numeric"] = (df["sex"] == "M").astype(int)
-predictors = ["age_years", "weight_kg", "creatinine_clearance_ml_min",
-              "sampling_time_min", "sex_numeric"]
-
-X = df[predictors].copy()
 y = df["csf_plasma_ratio"].copy()
-
 X_sm = sm.add_constant(X)
 ols_model = sm.OLS(y, X_sm).fit()
 print(ols_model.summary())
 
 # --- Figure 1: Correlation Heatmap + Scatter ---
-fig, axes = plt.subplots(1, 2, figsize=(18, 7))
+fig, axes = plt.subplots(1, 2, figsize=(16, 7))
 
 sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="RdBu_r", center=0,
             square=True, linewidths=0.5, ax=axes[0],
@@ -97,15 +97,12 @@ sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="RdBu_r", center=0,
 axes[0].set_title("Pearson Correlation Matrix", fontsize=14, fontweight="bold")
 axes[0].tick_params(axis="x", rotation=45)
 
-axes[1].scatter(df["sampling_time_min"], df["csf_concentration_ug_ml"],
+axes[1].scatter(df["sampling_time_min"], df["csf_plasma_ratio"],
                 c=df["therapeutic_threshold_met"], cmap="RdYlGn",
                 edgecolors="black", alpha=0.7, s=60)
-axes[1].axhline(y=0.25, color="red", linestyle="--", linewidth=1.5,
-                label="MIC Threshold (0.25 µg/ml)")
 axes[1].set_xlabel("Sampling Time (min post-infusion)", fontsize=12)
-axes[1].set_ylabel("CSF Doripenem Concentration (µg/ml)", fontsize=12)
-axes[1].set_title("CSF Concentration vs. Sampling Time", fontsize=14, fontweight="bold")
-axes[1].legend(fontsize=11)
+axes[1].set_ylabel("CSF/Plasma Ratio", fontsize=12)
+axes[1].set_title("CSF/Plasma Ratio vs. Sampling Time", fontsize=14, fontweight="bold")
 
 plt.tight_layout()
 plt.savefig("figure1_correlation_analysis.png", dpi=150, bbox_inches="tight")
@@ -119,7 +116,7 @@ print("\n\n" + "=" * 70)
 print("PART B: LOGISTIC REGRESSION — THERAPEUTIC THRESHOLD ACHIEVEMENT")
 print("=" * 70)
 print("\n    Outcome: CSF >= 0.25 µg/ml (binary)")
-print("    Predictors: age, weight, CrCl, sampling_time, sex\n")
+print("    Predictors: age, weight, CrCl, sampling_time\n")
 
 # --- B1: Logistic Regression (statsmodels for inference) ---
 X_logit = sm.add_constant(X)
@@ -184,7 +181,7 @@ for (row, col), cell in table3.get_celld().items():
         cell.set_text_props(color="white", fontweight="bold")
     cell.set_edgecolor("#dddddd")
 fig3.text(0.5, 0.01,
-          "Dependent variables — Spearman: CSF concentration (µg/mL)  |  OLS Regression: CSF/plasma ratio  |  "
+          "Dependent variables — Spearman: CSF/plasma ratio  |  OLS Regression: CSF/plasma ratio  |  "
           "Logistic Regression: therapeutic threshold (CSF ≥ 0.25 µg/mL)",
           ha="center", fontsize=9, fontstyle="italic", color="#555555")
 plt.savefig("figure2_pvalue_summary.png", dpi=150, bbox_inches="tight")
@@ -195,20 +192,18 @@ print("Saved: figure2_pvalue_summary.png")
 
 # --- Figure 4: Odds Ratios with Forest Plot ---
 or_plot_data = or_table.drop("const", errors="ignore")
-# Exclude sex from forest plot (wide CI distorts scale; not significant)
-or_forest_data = or_plot_data.drop("sex_numeric", errors="ignore")
 fig5, (ax5a, ax5b) = plt.subplots(1, 2, figsize=(16, max(4, len(or_plot_data) * 0.8 + 2)),
                                    gridspec_kw={"width_ratios": [1, 1.2]})
 
-# Forest plot (without sex)
-y_pos = range(len(or_forest_data))
-ax5a.errorbar(or_forest_data["Odds_Ratio"], y_pos,
-              xerr=[or_forest_data["Odds_Ratio"] - or_forest_data["OR_lower_95"],
-                    or_forest_data["OR_upper_95"] - or_forest_data["Odds_Ratio"]],
+# Forest plot
+y_pos = range(len(or_plot_data))
+ax5a.errorbar(or_plot_data["Odds_Ratio"], y_pos,
+              xerr=[or_plot_data["Odds_Ratio"] - or_plot_data["OR_lower_95"],
+                    or_plot_data["OR_upper_95"] - or_plot_data["Odds_Ratio"]],
               fmt="o", color="#4472c4", ecolor="#999999", elinewidth=2, capsize=5, markersize=8)
 ax5a.axvline(x=1.0, color="red", linestyle="--", linewidth=1.5, label="OR = 1.0 (no effect)")
 ax5a.set_yticks(list(y_pos))
-ax5a.set_yticklabels(or_forest_data.index, fontsize=11)
+ax5a.set_yticklabels(or_plot_data.index, fontsize=11)
 ax5a.set_xlabel("Odds Ratio (95% CI)", fontsize=12)
 ax5a.set_title("Forest Plot — Odds Ratios", fontsize=13, fontweight="bold")
 ax5a.legend(fontsize=10)
@@ -247,12 +242,9 @@ for (row, col), cell in table5.get_celld().items():
 ax5b.set_title("Odds Ratios — 95% Confidence Intervals", fontsize=13, fontweight="bold")
 
 plt.tight_layout()
-fig5.text(0.5, 0.02,
+fig5.text(0.5, 0.01,
           "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary)",
           ha="center", fontsize=9, fontstyle="italic", color="#555555")
-fig5.text(0.5, -0.01,
-          "Note: sex excluded from forest plot due to wide CI distorting scale (not significant, p = 0.80); included in table.",
-          ha="center", fontsize=8, fontstyle="italic", color="#888888")
 plt.savefig("figure4_odds_ratios.png", dpi=150, bbox_inches="tight")
 plt.close()
 print("Saved: figure4_odds_ratios.png")

@@ -28,12 +28,13 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 
 **Linear Regression (CSF/Plasma Ratio)**
 - Sampling time is the strongest predictor (p < 0.001)
-- Weight is significant (p = 0.035)
-- Model R-squared = 0.48
+- Weight is significant (p = 0.023)
+- Model R-squared = 0.47
 
 **Logistic Regression (Therapeutic Threshold)**
 - Sampling time: OR = 1.07, p < 0.001
-- Model AUC = 0.954, accuracy = 93%
+- Weight: OR = 0.93, p = 0.043
+- Model AUC = 0.954
 
 ### Figures
 
@@ -43,7 +44,7 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 **Figure 2 — Comprehensive P-Value Summary** — All statistical tests and their p-values across Spearman correlations, OLS regression, and logistic regression:
 ![P-Value Summary](figure2_pvalue_summary.png)
 
-**Figure 3 — OLS Regression Summary** — Coefficients, standard errors, t-statistics, and confidence intervals (R² = 0.48):
+**Figure 3 — OLS Regression Summary** — Coefficients, standard errors, t-statistics, and confidence intervals (R² = 0.47):
 ![OLS Summary](figure3_ols_summary.png)
 
 **Figure 4 — Odds Ratios with Forest Plot** — Odds ratios with 95% confidence intervals for predictors of therapeutic threshold achievement:
