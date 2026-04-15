@@ -252,19 +252,22 @@ table5 = ax5b.table(cellText=or_rows, colLabels=or_col_labels, cellColours=or_co
 table5.auto_set_font_size(False)
 table5.set_fontsize(10)
 table5.scale(1, 1.8)
+# Widen Variable column to fit "Sampling Time (min)"
+col_widths = [0.22, 0.12, 0.14, 0.14, 0.14, 0.08]
 for (row, col), cell in table5.get_celld().items():
+    cell.set_width(col_widths[col])
     if row == 0:
         cell.set_text_props(color="white", fontweight="bold")
     cell.set_edgecolor("#dddddd")
 ax5b.set_title("Odds Ratios — 95% Confidence Intervals", fontsize=13, fontweight="bold")
 
 plt.tight_layout()
-fig5.subplots_adjust(bottom=0.20)
-fig5.text(0.5, 0.10,
+fig5.subplots_adjust(bottom=0.18)
+fig5.text(0.5, 0.09,
           "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary). "
           "Coefficients (log-odds) exponentiated to odds ratios for clinical interpretability.",
           ha="center", fontsize=8.5, fontstyle="italic", color="#555555")
-fig5.text(0.5, 0.05,
+fig5.text(0.5, 0.04,
           "Interpretation: OR > 1 indicates increased odds per unit increase in predictor; OR < 1 indicates decreased odds "
           "(e.g., OR = 1.07 for Sampling Time = 7% increase in odds per additional minute post-infusion).",
           ha="center", fontsize=8, fontstyle="italic", color="#888888")
