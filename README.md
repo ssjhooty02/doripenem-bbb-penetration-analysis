@@ -13,7 +13,9 @@ Statistical analysis of doripenem pharmacokinetics across the intact blood-brain
 
 The original study (Margetis et al., 2011) reported pharmacokinetic data on 5 neurosurgical patients, measuring weight, sampling time post-infusion, plasma concentration, and CSF concentration. A synthetic dataset of **n = 200 patients** was generated with pharmacokinetic profiles consistent with the published data. To enable multivariate regression modeling, clinically relevant covariates not reported in the original study — age and creatinine clearance — were added to the simulated cohort. CSF/plasma ratio was derived as a measure of BBB penetration efficiency.
 
-Whereas the original paper established preliminary evidence that doripenem penetrates the intact BBB, the present analysis extends those findings by evaluating whether patient-level clinical variables can predict the degree of CSF penetration (multiple linear regression on CSF/plasma ratio) and the probability of achieving therapeutic CSF concentrations (logistic regression on CSF ≥ 0.25 µg/mL). The dataset is clearly simulated for statistical analysis demonstration purposes.
+Whereas the original paper established preliminary evidence that doripenem penetrates the intact BBB, the present analysis extends those findings by evaluating whether patient-level clinical variables can predict the degree of CSF penetration (multiple linear regression on CSF/plasma ratio) and the probability of achieving therapeutic CSF concentrations (logistic regression on CSF ≥ 0.25 µg/mL).
+
+> **Disclaimer:** This dataset is entirely simulated and all findings are derived from synthetic data. The results presented herein are not validated against clinical observations and must not be used to inform clinical decision-making in any capacity. The purpose of this project is to demonstrate proficiency in applying statistical analysis methodologies (correlation, regression, ROC analysis) to neurosurgical pharmacokinetic datasets using Python and R.
 
 **Variables:** age, weight, creatinine clearance, sampling time post-infusion, plasma concentration (µg/mL), CSF concentration (µg/mL), CSF/plasma ratio.
 
