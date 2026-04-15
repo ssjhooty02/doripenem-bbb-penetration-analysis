@@ -26,12 +26,12 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 
 ## Key Results
 
-**Linear Regression (CSF/Plasma Ratio)**
+**Linear Regression — CSF/Plasma Ratio (Figures 1, 2, 3)**
 - Sampling time is the strongest predictor (p < 0.001)
 - Weight is significant (p = 0.023)
 - Model R-squared = 0.47
 
-**Logistic Regression (Therapeutic Threshold)**
+**Logistic Regression — Therapeutic Threshold (Figures 2, 4, 5)**
 - Sampling time: OR = 1.07, p < 0.001
 - Weight: OR = 0.93, p = 0.043
 - Model AUC = 0.954
