@@ -242,14 +242,13 @@ for (row, col), cell in table5.get_celld().items():
 ax5b.set_title("Odds Ratios — 95% Confidence Intervals", fontsize=13, fontweight="bold")
 
 plt.tight_layout()
-fig5.text(0.5, 0.03,
-          "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary)",
-          ha="center", fontsize=9, fontstyle="italic", color="#555555")
-fig5.text(0.5, 0.00,
-          "Logistic regression coefficients (log-odds) exponentiated to odds ratios for clinical interpretability.",
-          ha="center", fontsize=8, fontstyle="italic", color="#888888")
-fig5.text(0.5, -0.03,
-          "Interpretation: OR = 1.07 for sampling_time_min indicates a 7% increase in the odds of achieving therapeutic CSF per additional minute post-infusion.",
+fig5.text(0.5, 0.02,
+          "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary). "
+          "Coefficients (log-odds) exponentiated to odds ratios for clinical interpretability.",
+          ha="center", fontsize=8.5, fontstyle="italic", color="#555555")
+fig5.text(0.5, -0.02,
+          "Interpretation: OR > 1 indicates increased odds per unit increase in predictor; OR < 1 indicates decreased odds "
+          "(e.g., OR = 1.07 for sampling time = 7% increase in odds per additional minute post-infusion).",
           ha="center", fontsize=8, fontstyle="italic", color="#888888")
 plt.savefig("figure4_odds_ratios.png", dpi=150, bbox_inches="tight")
 plt.close()
