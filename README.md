@@ -11,9 +11,11 @@ Statistical analysis of doripenem pharmacokinetics across the intact blood-brain
 
 ## Dataset
 
-The original study reported data on 5 neurosurgical patients (Table 1). A synthetic dataset of **n = 200 patients** was generated with pharmacokinetic profiles consistent with the published data, adding clinically relevant covariates (age, sex, BMI, creatinine clearance). The dataset is clearly simulated for analysis demonstration purposes.
+The original study (Margetis et al., 2011) reported pharmacokinetic data on 5 neurosurgical patients, measuring weight, sampling time post-infusion, plasma concentration, and CSF concentration. A synthetic dataset of **n = 200 patients** was generated with pharmacokinetic profiles consistent with the published data. To enable multivariate regression modeling, clinically relevant covariates not reported in the original study — age and creatinine clearance — were added to the simulated cohort. CSF/plasma ratio was derived as a measure of BBB penetration efficiency.
 
-**Variables:** patient ID, age, sex, weight, height, BMI, creatinine clearance, infusion duration, sampling time post-infusion, plasma concentration, CSF concentration, CSF/plasma ratio, therapeutic threshold status (CSF >= 0.25 ug/ml).
+Whereas the original paper established preliminary evidence that doripenem penetrates the intact BBB, the present analysis extends those findings by evaluating whether patient-level clinical variables can predict the degree of CSF penetration (multiple linear regression on CSF/plasma ratio) and the probability of achieving therapeutic CSF concentrations (logistic regression on CSF ≥ 0.25 µg/mL). The dataset is clearly simulated for statistical analysis demonstration purposes.
+
+**Variables:** age, weight, creatinine clearance, sampling time post-infusion, plasma concentration (µg/mL), CSF concentration (µg/mL), CSF/plasma ratio.
 
 ## Analyses
 
@@ -40,7 +42,7 @@ The model achieved an AUC of 0.954 on ROC analysis, indicating excellent discrim
 
 ### Figures
 
-**Figure 1 — Correlation Analysis** — Pearson correlation heatmap and CSF concentration vs. sampling time:
+**Figure 1 — Correlation Analysis** — Pearson correlation heatmap and CSF/plasma ratio vs. sampling time:
 ![Correlation Analysis](figure1_correlation_analysis.png)
 
 **Figure 2 — Comprehensive P-Value Summary** — All statistical tests and their p-values across Spearman correlations, OLS regression, and logistic regression:
