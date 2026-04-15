@@ -109,12 +109,16 @@ sns.heatmap(corr_display, annot=True, fmt=".2f", cmap="RdBu_r", center=0,
 axes[0].set_title("Pearson Correlation Matrix", fontsize=14, fontweight="bold")
 axes[0].tick_params(axis="x", rotation=45)
 
-axes[1].scatter(df["sampling_time_min"], df["csf_plasma_ratio"],
-                c=df["therapeutic_threshold_met"], cmap="RdYlGn",
-                edgecolors="black", alpha=0.7, s=60)
+above = df["therapeutic_threshold_met"] == 1
+below = df["therapeutic_threshold_met"] == 0
+axes[1].scatter(df.loc[above, "sampling_time_min"], df.loc[above, "csf_plasma_ratio"],
+                c="forestgreen", edgecolors="black", alpha=0.7, s=60, label="Above MIC")
+axes[1].scatter(df.loc[below, "sampling_time_min"], df.loc[below, "csf_plasma_ratio"],
+                c="red", edgecolors="black", alpha=0.7, s=60, label="Below MIC")
 axes[1].set_xlabel("Sampling Time (min post-infusion)", fontsize=12)
 axes[1].set_ylabel("CSF/Plasma Ratio", fontsize=12)
 axes[1].set_title("CSF/Plasma Ratio vs. Sampling Time", fontsize=14, fontweight="bold")
+axes[1].legend(fontsize=11)
 
 plt.tight_layout()
 plt.savefig("figure1_correlation_analysis.png", dpi=150, bbox_inches="tight")

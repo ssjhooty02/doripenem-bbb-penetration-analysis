@@ -186,7 +186,7 @@ ols_tab <- data.frame(
   stringsAsFactors = FALSE
 )
 
-png("figure3_ols_summary.png", width = 1400, height = 450, res = 150)
+png("figure3_ols_summary.png", width = 1400, height = 550, res = 150)
 par(mar = c(4, 1, 4, 1))
 plot.new()
 
