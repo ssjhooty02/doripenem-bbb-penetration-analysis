@@ -19,21 +19,24 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 
 | Analysis | Description |
 |---|---|
-| Pearson & Spearman Correlations | Bivariate relationships between PK variables and patient covariates |
-| Multiple Linear Regression (OLS) | Predictors of CSF/plasma penetration ratio |
-| Logistic Regression | Binary classification — probability of achieving therapeutic CSF concentration (MIC >= 0.25 ug/ml) |
-| ROC / AUC | Receiver operating characteristic curve with area under the curve |
+| Pearson & Spearman Correlations | Bivariate relationships among age, weight, creatinine clearance, sampling time, and CSF/plasma ratio (Figures 1, 2) |
+| Multiple Linear Regression (OLS) | Multivariate predictors of CSF/plasma ratio with coefficient estimates and 95% confidence intervals (Figures 2, 3) |
+| Logistic Regression | Binary classification of therapeutic CSF achievement (≥ 0.25 µg/mL) with odds ratios and forest plot (Figures 2, 4) |
+| ROC / AUC | Receiver operating characteristic analysis evaluating logistic model discrimination (Figure 5) |
 
 ## Key Results
 
-**Linear Regression — CSF/Plasma Ratio (Figures 1, 2, 3)**
-- Sampling time emerged as the strongest predictor of CSF/plasma ratio (p < 0.001). This is pharmacokinetically expected, as doripenem CSF penetration is a time-dependent process governed by passive diffusion across the intact BBB.
-- Weight was also significant (p = 0.023), consistent with established pharmacokinetic principles: body weight directly influences volume of distribution, and weight-based dosing adjustments are well recognized in antimicrobial therapy.
-- The model R-squared of 0.47 indicates that 47% of the variance in CSF/plasma ratio is explained by the four predictor variables (age, weight, creatinine clearance, and sampling time). The remaining 53% is attributable to unmeasured sources of biological variability, including individual differences in BBB permeability, cerebral blood flow, meningeal inflammation status, CSF turnover rate, and plasma protein binding.
+**Multiple Linear Regression — CSF/Plasma Ratio (Figures 1, 2, 3)**
+
+Sampling time post-infusion was the strongest predictor of CSF/plasma ratio (p < 0.001), consistent with the expected pharmacokinetics of a renally-cleared carbapenem undergoing time-dependent passive diffusion across the intact BBB. Weight was also a significant predictor (p = 0.023), in agreement with established dosing principles whereby body weight influences volume of distribution and, consequently, achievable drug concentrations at the target site. Age and creatinine clearance did not reach statistical significance in the multivariate model.
+
+The model yielded an R² of 0.47, indicating that 47% of the variance in CSF/plasma ratio is attributable to the four predictor variables (age, weight, creatinine clearance, and sampling time). The residual 53% of unexplained variance likely reflects unmeasured sources of inter-individual biological variability, including differences in BBB permeability, regional cerebral blood flow, meningeal inflammatory status, CSF turnover rate, and plasma protein binding.
 
 **Logistic Regression — Therapeutic Threshold (Figures 2, 4, 5)**
-- In the logistic regression, the outcome was modeled as a binary therapeutic threshold of CSF concentration ≥ 0.25 µg/mL (the MIC for susceptible organisms), as opposed to the continuous CSF/plasma ratio used in the linear model. Sampling time (OR = 1.07, p < 0.001) and weight (OR = 0.93, p = 0.043) were again the significant predictors, mirroring the multiple linear regression findings and affirming the consistent influence of these two covariates across both analytical approaches.
-- The model achieved an AUC of 0.954, indicating excellent discriminative ability. An AUC of 1.0 represents perfect classification, while 0.5 represents performance equivalent to chance. An AUC exceeding 0.9 is considered outstanding in clinical diagnostic contexts, demonstrating that the model reliably distinguishes patients who achieve therapeutic CSF concentrations from those who do not.
+
+To assess predictors of clinically meaningful BBB penetration, a logistic regression was performed with the binary outcome of CSF concentration ≥ 0.25 µg/mL — the MIC threshold for susceptible organisms — as opposed to the continuous CSF/plasma ratio modeled in the linear regression. Sampling time (OR = 1.07, p < 0.001) and weight (OR = 0.93, p = 0.043) were the significant predictors, mirroring the linear regression findings and affirming the consistent influence of these two covariates across both analytical approaches. An OR of 1.07 corresponds to a 7% increase in the odds of therapeutic achievement per additional minute post-infusion; an OR of 0.93 corresponds to a 7% decrease in odds per additional kilogram of body weight.
+
+The model achieved an AUC of 0.954 on ROC analysis, indicating excellent discriminative performance. In clinical classification contexts, an AUC exceeding 0.9 is considered outstanding (reference range: 0.5 = no discrimination, 1.0 = perfect discrimination), demonstrating that the logistic model reliably distinguishes patients who achieve therapeutic CSF concentrations from those who do not based on readily available clinical parameters.
 
 ### Figures
 
