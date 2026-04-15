@@ -21,12 +21,13 @@ Whereas the original paper established preliminary evidence that doripenem penet
 
 ## Analyses
 
-| Analysis | Description |
-|---|---|
-| Pearson & Spearman Correlations | Bivariate relationships among age, weight, creatinine clearance, sampling time, and CSF/plasma ratio (Figures 1, 2) |
-| Multiple Linear Regression (OLS) | Multivariate predictors of CSF/plasma ratio with coefficient estimates and 95% confidence intervals (Figures 2, 3) |
-| Logistic Regression | Binary classification of therapeutic CSF achievement (≥ 0.25 µg/mL) with odds ratios and forest plot (Figures 2, 4) |
-| ROC / AUC | Receiver operating characteristic analysis evaluating logistic model discrimination (Figure 5) |
+| Analysis | Description | Figures |
+|---|---|---|
+| Correlation Analysis | Pearson & Spearman bivariate relationships among clinical covariates and CSF/plasma ratio | 1 |
+| Multiple Linear Regression (OLS) | Multivariate predictors of CSF/plasma ratio with coefficients and 95% CIs (R² = 0.47) | 3 |
+| Logistic Regression & ROC Analysis | Binary classification of therapeutic CSF achievement (≥ 0.25 µg/mL) with odds ratios, forest plot, and model discrimination (AUC = 0.954) | 4, 5 |
+
+> Figure 2 provides a comprehensive p-value summary spanning all analyses above.
 
 ## Key Results
 
