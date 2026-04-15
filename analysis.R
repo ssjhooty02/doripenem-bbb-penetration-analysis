@@ -117,8 +117,8 @@ cat(sprintf("\n--- ROC Analysis ---\n"))
 cat(sprintf("  AUC = %.3f\n", auc_val))
 
 # --- Figure 5: ROC Plot ---
-png("figure5_logistic_regression.png", width = 1600, height = 700, res = 150)
-par(mfrow = c(1, 2))
+png("figure5_logistic_regression.png", width = 1600, height = 750, res = 150)
+par(mfrow = c(1, 2), oma = c(3, 0, 0, 0))
 
 # Smoothed ROC curve using binormal method, plotted manually
 roc_smooth <- smooth(roc_obj, method = "binormal")
@@ -151,6 +151,9 @@ legend("bottomright",
        col = c("forestgreen", "red", "red"),
        pch = c(19, 19, NA), lty = c(NA, NA, 2), lwd = c(NA, NA, 2),
        cex = 0.9)
+
+mtext("Model includes all 4 predictors (age, weight, CrCl, sampling time); sampling time plotted as the dominant predictor (p < 0.001).",
+      side = 1, line = 3.5, cex = 0.65, font = 3, col = "#555555", outer = TRUE)
 
 dev.off()
 cat("\nSaved: figure5_logistic_regression.png\n")
