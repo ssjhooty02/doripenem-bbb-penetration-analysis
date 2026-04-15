@@ -256,7 +256,7 @@ ax5b.set_title("Odds Ratios — 95% Confidence Intervals", fontsize=13, fontweig
 
 plt.tight_layout()
 fig5.subplots_adjust(bottom=0.18)
-fig5.text(0.5, 0.09,
+fig5.text(0.5, 0.07,
           "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary). "
           "Coefficients (log-odds) exponentiated to odds ratios for clinical interpretability.",
           ha="center", fontsize=8.5, fontstyle="italic", color="#555555")
