@@ -46,6 +46,15 @@ print(f"Therapeutic threshold met (CSF >= 0.25 ug/ml): "
 # ============================================================
 # DEFINE ANALYSIS VARIABLES
 # ============================================================
+# Display labels for clean figure output
+VAR_LABELS = {
+    "age_years": "Age (yrs)",
+    "weight_kg": "Weight (kg)",
+    "creatinine_clearance_ml_min": "CrCl (mL/min)",
+    "sampling_time_min": "Sampling Time (min)",
+    "csf_plasma_ratio": "CSF/Plasma Ratio",
+}
+
 # Five core variables used consistently across all analyses
 analysis_vars = [
     "age_years", "weight_kg", "creatinine_clearance_ml_min",
@@ -91,7 +100,10 @@ print(ols_model.summary())
 # --- Figure 1: Correlation Heatmap + Scatter ---
 fig, axes = plt.subplots(1, 2, figsize=(16, 7))
 
-sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="RdBu_r", center=0,
+corr_display = corr_matrix.copy()
+corr_display.index = [VAR_LABELS.get(v, v) for v in corr_display.index]
+corr_display.columns = [VAR_LABELS.get(v, v) for v in corr_display.columns]
+sns.heatmap(corr_display, annot=True, fmt=".2f", cmap="RdBu_r", center=0,
             square=True, linewidths=0.5, ax=axes[0],
             cbar_kws={"shrink": 0.8})
 axes[0].set_title("Pearson Correlation Matrix", fontsize=14, fontweight="bold")
@@ -143,16 +155,16 @@ print(or_table.to_string())
 # --- Figure 2: Comprehensive P-Value Summary ---
 pval_rows = []
 for r in spearman_results:
-    pval_rows.append(["Spearman Correlation", r["Variable"], f"{r['Rho']:+.3f} (rho)", f"{r['P_Value']:.4f}", r["Significance"]])
+    pval_rows.append(["Spearman Correlation", VAR_LABELS.get(r["Variable"], r["Variable"]), f"{r['Rho']:+.3f} (rho)", f"{r['P_Value']:.4f}", r["Significance"]])
 for var in ols_model.pvalues.index:
     if var == "const":
         continue
-    pval_rows.append(["OLS Regression", var, f"{ols_model.params[var]:.4f} (coef)", f"{ols_model.pvalues[var]:.4f}",
+    pval_rows.append(["OLS Regression", VAR_LABELS.get(var, var), f"{ols_model.params[var]:.4f} (coef)", f"{ols_model.pvalues[var]:.4f}",
                        "***" if ols_model.pvalues[var] < 0.001 else "**" if ols_model.pvalues[var] < 0.01 else "*" if ols_model.pvalues[var] < 0.05 else "ns"])
 for var in logit_model.pvalues.index:
     if var == "const":
         continue
-    pval_rows.append(["Logistic Regression", var, f"{logit_model.params[var]:.4f} (coef)", f"{logit_model.pvalues[var]:.4f}",
+    pval_rows.append(["Logistic Regression", VAR_LABELS.get(var, var), f"{logit_model.params[var]:.4f} (coef)", f"{logit_model.pvalues[var]:.4f}",
                        "***" if logit_model.pvalues[var] < 0.001 else "**" if logit_model.pvalues[var] < 0.01 else "*" if logit_model.pvalues[var] < 0.05 else "ns"])
 
 fig3, ax3 = plt.subplots(figsize=(14, max(6, len(pval_rows) * 0.4 + 2)))
@@ -192,6 +204,7 @@ print("Saved: figure2_pvalue_summary.png")
 
 # --- Figure 4: Odds Ratios with Forest Plot ---
 or_plot_data = or_table.drop("const", errors="ignore")
+or_plot_data.index = [VAR_LABELS.get(v, v) for v in or_plot_data.index]
 fig5, (ax5a, ax5b) = plt.subplots(1, 2, figsize=(16, max(4, len(or_plot_data) * 0.8 + 2)),
                                    gridspec_kw={"width_ratios": [1, 1.2]})
 
@@ -242,13 +255,14 @@ for (row, col), cell in table5.get_celld().items():
 ax5b.set_title("Odds Ratios — 95% Confidence Intervals", fontsize=13, fontweight="bold")
 
 plt.tight_layout()
-fig5.text(0.5, 0.02,
+fig5.subplots_adjust(bottom=0.18)
+fig5.text(0.5, 0.09,
           "Dependent variable: therapeutic threshold achievement (CSF ≥ 0.25 µg/mL, binary). "
           "Coefficients (log-odds) exponentiated to odds ratios for clinical interpretability.",
           ha="center", fontsize=8.5, fontstyle="italic", color="#555555")
-fig5.text(0.5, -0.02,
+fig5.text(0.5, 0.03,
           "Interpretation: OR > 1 indicates increased odds per unit increase in predictor; OR < 1 indicates decreased odds "
-          "(e.g., OR = 1.07 for sampling time = 7% increase in odds per additional minute post-infusion).",
+          "(e.g., OR = 1.07 for Sampling Time = 7% increase in odds per additional minute post-infusion).",
           ha="center", fontsize=8, fontstyle="italic", color="#888888")
 plt.savefig("figure4_odds_ratios.png", dpi=150, bbox_inches="tight")
 plt.close()

@@ -40,6 +40,16 @@ cat(sprintf("Therapeutic threshold met (CSF >= 0.25 ug/ml): %d/%d (%.1f%%)\n\n",
 # ==============================================================================
 # DEFINE ANALYSIS VARIABLES
 # ==============================================================================
+# Display labels for clean figure output
+var_labels <- c(
+  "age_years" = "Age (yrs)",
+  "weight_kg" = "Weight (kg)",
+  "creatinine_clearance_ml_min" = "CrCl (mL/min)",
+  "sampling_time_min" = "Sampling Time (min)",
+  "csf_plasma_ratio" = "CSF/Plasma Ratio",
+  "(Intercept)" = "Intercept"
+)
+
 # Five core variables used consistently across all analyses
 analysis_vars <- c("age_years", "weight_kg", "creatinine_clearance_ml_min",
                    "sampling_time_min", "csf_plasma_ratio")
@@ -117,8 +127,8 @@ cat(sprintf("\n--- ROC Analysis ---\n"))
 cat(sprintf("  AUC = %.3f\n", auc_val))
 
 # --- Figure 5: ROC Plot ---
-png("figure5_logistic_regression.png", width = 1600, height = 750, res = 150)
-par(mfrow = c(1, 2), oma = c(3, 0, 0, 0))
+png("figure5_logistic_regression.png", width = 1600, height = 720, res = 150)
+par(mfrow = c(1, 2), oma = c(1.5, 0, 0, 0))
 
 # Smoothed ROC curve using binormal method, plotted manually
 roc_smooth <- smooth(roc_obj, method = "binormal")
@@ -152,8 +162,8 @@ legend("bottomright",
        pch = c(19, 19, NA), lty = c(NA, NA, 2), lwd = c(NA, NA, 2),
        cex = 0.9)
 
-mtext("Model includes all 4 predictors (age, weight, CrCl, sampling time); sampling time plotted as the dominant predictor (p < 0.001).",
-      side = 1, line = 3.5, cex = 0.65, font = 3, col = "#555555", outer = TRUE)
+mtext("Model includes all 4 predictors (Age, Weight, CrCl, Sampling Time); Sampling Time plotted as the dominant predictor (p < 0.001).",
+      side = 1, line = 0.5, cex = 0.65, font = 3, col = "#555555", outer = TRUE)
 
 dev.off()
 cat("\nSaved: figure5_logistic_regression.png\n")
@@ -166,7 +176,8 @@ ols_coefs <- ols_summary$coefficients
 ols_ci <- confint(ols_model)
 
 ols_tab <- data.frame(
-  Variable = rownames(ols_coefs),
+  Variable = ifelse(rownames(ols_coefs) %in% names(var_labels),
+                    var_labels[rownames(ols_coefs)], rownames(ols_coefs)),
   Coefficient = sprintf("%.4f", ols_coefs[, "Estimate"]),
   Std_Error = sprintf("%.4f", ols_coefs[, "Std. Error"]),
   t_statistic = sprintf("%.3f", ols_coefs[, "t value"]),
