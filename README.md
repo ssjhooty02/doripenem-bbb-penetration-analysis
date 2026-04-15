@@ -27,14 +27,13 @@ The original study reported data on 5 neurosurgical patients (Table 1). A synthe
 ## Key Results
 
 **Linear Regression — CSF/Plasma Ratio (Figures 1, 2, 3)**
-- Sampling time is the strongest predictor (p < 0.001)
-- Weight is significant (p = 0.023)
-- Model R-squared = 0.47
+- Sampling time emerged as the strongest predictor of CSF/plasma ratio (p < 0.001). This is pharmacokinetically expected, as doripenem CSF penetration is a time-dependent process governed by passive diffusion across the intact BBB.
+- Weight was also significant (p = 0.023), consistent with established pharmacokinetic principles: body weight directly influences volume of distribution, and weight-based dosing adjustments are well recognized in antimicrobial therapy.
+- The model R-squared of 0.47 indicates that 47% of the variance in CSF/plasma ratio is explained by the four predictor variables (age, weight, creatinine clearance, and sampling time). The remaining 53% is attributable to unmeasured sources of biological variability, including individual differences in BBB permeability, cerebral blood flow, meningeal inflammation status, CSF turnover rate, and plasma protein binding.
 
 **Logistic Regression — Therapeutic Threshold (Figures 2, 4, 5)**
-- Sampling time: OR = 1.07, p < 0.001
-- Weight: OR = 0.93, p = 0.043
-- Model AUC = 0.954
+- In the logistic regression, the outcome was modeled as a binary therapeutic threshold of CSF concentration ≥ 0.25 µg/mL (the MIC for susceptible organisms), as opposed to the continuous CSF/plasma ratio used in the linear model. Sampling time (OR = 1.07, p < 0.001) and weight (OR = 0.93, p = 0.043) were again the significant predictors, mirroring the multiple linear regression findings and affirming the consistent influence of these two covariates across both analytical approaches.
+- The model achieved an AUC of 0.954, indicating excellent discriminative ability. An AUC of 1.0 represents perfect classification, while 0.5 represents performance equivalent to chance. An AUC exceeding 0.9 is considered outstanding in clinical diagnostic contexts, demonstrating that the model reliably distinguishes patients who achieve therapeutic CSF concentrations from those who do not.
 
 ### Figures
 
